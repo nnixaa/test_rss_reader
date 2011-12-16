@@ -1,6 +1,7 @@
 package com.example.rssreader.helpers;
 
 import android.util.Log;
+import com.example.rssreader.adapters.RssAdapter;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -51,9 +52,10 @@ public class RssParserHelper {
                 Node link           = (Node) xpath.evaluate(EXPR_LINK, item, XPathConstants.NODE);
 
                 hash.put("title", title.getTextContent());
-                hash.put("description", description.getTextContent());
+                hash.put("description", android.text.Html.fromHtml(description.getTextContent()).toString());
                 hash.put("date", date.getTextContent());
                 hash.put("link", link.getTextContent());
+                hash.put("state", RssAdapter.STATE_NORMAL);
 
                 result.add(hash);
 

@@ -1,0 +1,4 @@
+<resources>
+    <item type="color" name="swiped_item">#777777</item>
+    <item type="color" name="normal_item">#000</item>
+</resources>

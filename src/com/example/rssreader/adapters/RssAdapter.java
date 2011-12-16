@@ -13,6 +13,9 @@ import java.util.HashMap;
 
 public class RssAdapter extends ArrayAdapter<HashMap> {
 
+    public static final int STATE_NORMAL      = 1;
+    public static final int STATE_EXPANDED    = 2;
+
     private final Context context;
     private ArrayList<HashMap> entities;
 
@@ -48,7 +51,13 @@ public class RssAdapter extends ArrayAdapter<HashMap> {
         } else {
             holder = (ViewHolder) rowView.getTag();
         }
-        holder.descriptionView.setText((String) entities.get(position).get("title"));
+        if ((Integer) entities.get(position).get("state") == STATE_EXPANDED) {
+            holder.descriptionView.setText((String) entities.get(position).get("description"));
+            rowView.setBackgroundResource(R.color.swiped_item);
+        } else {
+            rowView.setBackgroundResource(R.color.normal_item);
+            holder.descriptionView.setText((String) entities.get(position).get("title"));
+        }
         return rowView;
     }
 
@@ -60,8 +69,22 @@ public class RssAdapter extends ArrayAdapter<HashMap> {
         return this.entities.size();
     }
 
+    /**
+     * Updates item
+     * @param index
+     * @return
+     */
     public HashMap getItem(int index) {
         return this.entities.get(index);
+    }
+
+    /**
+     * Updates item
+     * @param index
+     * @param newItem
+     */
+    public void updateItem(int index, HashMap newItem) {
+        this.entities.set(index, newItem);
     }
 
     /**

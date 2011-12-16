@@ -3,7 +3,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="4dip">
+    android:paddingBottom="20dip"
+    android:paddingTop="20dip"
+    android:paddingLeft="4dip"
+    android:paddingRight="4dip">
 
     <TextView
         android:id="@+id/list_item_text"

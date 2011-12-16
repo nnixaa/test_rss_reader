@@ -4,10 +4,8 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -21,6 +19,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.example.rssreader.adapters.RssAdapter;
+
+import java.util.HashMap;
 
 public class PullToRefresh extends LinearLayout {
 
@@ -48,6 +49,8 @@ public class PullToRefresh extends LinearLayout {
 
 	private int headerHeight;
 	private float startY = -1;
+	private float startSwipeX = -1;
+	private float startSwipeY = -1;
 	private Handler handler = new Handler();
 	private PullToRefreshAdapter adapter;
 
@@ -308,9 +311,11 @@ public class PullToRefresh extends LinearLayout {
 
 	private boolean onListViewTouch(View view, MotionEvent event) {
 
+
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_MOVE :
-				updateEventStates(event);
+
+                updateEventStates(event);
 
 				if (isPullingDownToRefresh() && startY == -1) {
 					if (startY == -1) {
@@ -325,18 +330,42 @@ public class PullToRefresh extends LinearLayout {
 				}
 				break;
 			case MotionEvent.ACTION_UP :
-				initializeYsHistory();
-				startY = -1;
 
-				if (state == RELEASE_TO_REFRESH) {
-					setRefreshed();
-					if (onRefreshListener != null) {
-						onRefreshListener.onRefresh();
-					}
-				}
 
-				ensureHeaderPosition();
-				break;
+                initializeYsHistory();
+                startY = -1;
+
+                if (state == RELEASE_TO_REFRESH) {
+                    setRefreshed();
+                    if (onRefreshListener != null) {
+                        onRefreshListener.onRefresh();
+                    }
+                }
+
+                ensureHeaderPosition();
+
+                // defines swipe left/right action
+                if (startSwipeX != -1  && startSwipeY != -1
+                        && (startSwipeX - event.getX() < 0)
+                        && (Math.abs(startSwipeX - event.getX()) > ViewConfiguration.getTouchSlop() * 2)
+                        && (Math.abs(startSwipeY - event.getY()) < 50)) {
+                    swipeLeft(view, event);
+                    return true;
+                } else if(startSwipeX != -1  && startSwipeY != -1
+                    && (startSwipeX - event.getX() > 0)
+                    && (Math.abs(startSwipeX - event.getX()) > ViewConfiguration.getTouchSlop() * 2)
+                        && (Math.abs(startSwipeY - event.getY()) < 50)) {
+                        swipeRight(view, event);
+                        return true;
+                }
+
+                break;
+            case MotionEvent.ACTION_DOWN :
+                // saves current x position
+                startSwipeX = event.getX();
+                startSwipeY = event.getY();
+
+                break;
 		}
 
 		if (onTouchListener != null) {
@@ -456,6 +485,36 @@ public class PullToRefresh extends LinearLayout {
 			handler.postDelayed(hideHeaderRunnable, 20);
 		}
 	}
+
+    private void swipeLeft(View view, MotionEvent event) {
+        changeItemState(view, event);
+    }
+
+    private void swipeRight(View view, MotionEvent event) {
+        changeItemState(view, event);
+    }
+
+    private void changeItemState(View view, MotionEvent event)   {
+        Integer position = listView.pointToPosition((int) event.getX(), (int) event.getY());
+        RssAdapter adapter = (RssAdapter) listView.getAdapter();
+
+        if (position != -1) {
+            HashMap item = (HashMap) listView.getAdapter().getItem(position);
+            Integer state = (Integer) item.get("state");
+
+            if (state ==  RssAdapter.STATE_EXPANDED) {
+                item.put("state", RssAdapter.STATE_NORMAL);
+                adapter.updateItem(position, item);
+                ((BaseAdapter) adapter).notifyDataSetChanged();
+            } else {
+                item.put("state", RssAdapter.STATE_EXPANDED);
+                adapter.updateItem(position, item);
+                ((BaseAdapter) adapter).notifyDataSetChanged();
+            }
+
+            listView.setSelection(position);
+        }
+    }
 
 	// ===========================================================
 	// Inner and Anonymous Classes
