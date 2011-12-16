@@ -8,9 +8,7 @@ import android.widget.TextView;
 import android.view.View;
 import com.example.rssreader.R;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class RssAdapter extends ArrayAdapter<HashMap> {
@@ -60,6 +58,10 @@ public class RssAdapter extends ArrayAdapter<HashMap> {
      */
     public int getCount() {
         return this.entities.size();
+    }
+
+    public HashMap getItem(int index) {
+        return this.entities.get(index);
     }
 
     /**

@@ -1,9 +1,13 @@
 package com.example.rssreader;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 import com.example.rssreader.adapters.RssAdapter;
 import com.example.rssreader.helpers.RssParserHelper;
@@ -54,6 +58,17 @@ public class MainActivity extends Activity
         listView.setOnRefreshListener(new PullToRefresh.OnRefreshListener() {
             public void onRefresh() {
                 loadFromNetwork();
+            }
+        });
+
+        // defines onClick method
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HashMap item = (HashMap) listView.getAdapter().getItem(position);
+
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse((String) item.get("link")));
+                startActivity(browserIntent);
             }
         });
 
