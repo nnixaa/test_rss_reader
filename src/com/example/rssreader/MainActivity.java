@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.rssreader.adapters.RssAdapter;
+import com.example.rssreader.helpers.RssParserHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -83,30 +84,12 @@ public class MainActivity extends Activity
                 HttpGet request = new HttpGet(url);
                 HttpResponse response = httpClient.execute(request);
 
-                XPath xpath = XPathFactory.newInstance().newXPath();
+                // gets source
                 InputSource inputSource = new InputSource(new InputStreamReader(response.getEntity().getContent()));
-
-                NodeList nodes = (NodeList) xpath.evaluate("//channel/item", inputSource, XPathConstants.NODESET);
-                Log.i(TAG, ((Integer) nodes.getLength()).toString());
-
-                int index = 0;
-                while (index < nodes.getLength()) {
-                    HashMap hash = new HashMap();
-
-                    NodeList items = nodes.item(index).getChildNodes();
-                    String title = items.item(1).getTextContent();
-
-                    if (title.length() > 0) {
-                        hash.put("title", title);
-                        result.add(hash);
-                    }
-                    index++;
-                }
-
+                // parse xml
+                result = RssParserHelper.parse(inputSource);
 
             } catch (IOException e) {
-                Log.e(TAG, e.toString());
-            } catch (XPathExpressionException e) {
                 Log.e(TAG, e.toString());
             }
             return result;
