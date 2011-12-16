@@ -50,11 +50,6 @@ public class RssParserHelper {
                 Node date           = (Node) xpath.evaluate(EXPR_DATE, item, XPathConstants.NODE);
                 Node link           = (Node) xpath.evaluate(EXPR_LINK, item, XPathConstants.NODE);
 
-                Log.i("title", title.getTextContent());
-                Log.i("description", description.getTextContent());
-                Log.i("date", date.getTextContent());
-                Log.i("link", link.getTextContent());
-
                 hash.put("title", title.getTextContent());
                 hash.put("description", description.getTextContent());
                 hash.put("date", date.getTextContent());

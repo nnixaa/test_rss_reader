@@ -14,20 +14,10 @@ import com.example.rssreader.helpers.RssParserHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderAdapter;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,6 +26,7 @@ import static com.example.rssreader.utils.Utils.internetAvailable;
 public class MainActivity extends Activity
 {
     private static final String TAG = "MainActivity";
+    private static final String RSS_URL = "http://habrahabr.ru/rss/best/";
 
     private PullToRefresh listView;
 
@@ -78,7 +69,7 @@ public class MainActivity extends Activity
     protected void loadFromNetwork() {
         if (internetAvailable(MainActivity.this)) {
             LoaderFromNetwork loader = new LoaderFromNetwork();
-            loader.execute("http://habrahabr.ru/rss/best/");
+            loader.execute(RSS_URL);
         } else {
             Toast.makeText(MainActivity.this, getString(R.string.shared_no_connection), Toast.LENGTH_SHORT).show();
             listView.onRefreshComplete();
