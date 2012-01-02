@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.example.rssreader.adapters.RssAdapter;
 import com.example.rssreader.helpers.RssParserHelper;
@@ -23,8 +24,7 @@ import java.util.HashMap;
 
 import static com.example.rssreader.utils.Utils.internetAvailable;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     private static final String RSS_URL = "http://habrahabr.ru/rss/best/";
 
@@ -32,8 +32,7 @@ public class MainActivity extends Activity
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
@@ -62,7 +61,14 @@ public class MainActivity extends Activity
                 startActivity(browserIntent);
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        listView.setVisibility(View.GONE);
+        findViewById(R.id.progress).setVisibility(View.VISIBLE);;
         loadFromNetwork();
     }
 
@@ -105,6 +111,8 @@ public class MainActivity extends Activity
         protected void onPostExecute(ArrayList result) {
             ((RssAdapter) listView.getAdapter()).setAll(result);
             listView.onRefreshComplete();
+            findViewById(R.id.progress).setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 
