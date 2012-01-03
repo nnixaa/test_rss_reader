@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Text Styles -->
+    <!-- TextAppearance style, inherited from android:TextAppearance -->
+
+    <style name="textAppearance" parent="android:TextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>

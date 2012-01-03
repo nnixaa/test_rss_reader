@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="RssReader" parent="android:Theme.Light">
+
+        <!-- Sets Text style for TextView widget -->
+        <item name="android:textViewStyle">@style/Widget.TextView</item>
+
+        <!-- Sets style for ListView widget -->
+        <item name="android:listViewStyle">@style/Widget.ListView</item>
+
+        <!-- Window styles -->
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowTitleStyle">@style/WindowTitle</item>
+        <item name="android:windowTitleSize">30dip</item>
+        <item name="android:windowTitleBackgroundStyle">@style/windowTitleBackgroundStyle</item>
+    </style>
+
+    <!-- Base widget style -->
+    <style name="Widget" parent="android:Widget"></style>
+
+    <!-- Description of TextView widget style -->
+    <style name="Widget.TextView" parent="android:Widget.TextView">
+        <item name="android:textAppearance">@style/textAppearance</item>
+        <item name="android:textColor">@color/rss_item_text</item>
+    </style>
+
+    <style name="Widget.TextView.Small" >
+        <item name="android:textAppearance">@style/textAppearance</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:textColor">@color/rss_item_text</item>
+    </style>
+
+    <style name="Widget.ListView" parent="android:Widget.ListView">
+        <item name="android:divider">@color/normal_item_divider</item>
+        <item name="android:dividerHeight">1dip</item>
+        <item name="android:paddingLeft">7dip</item>
+        <item name="android:paddingRight">7dip</item>
+        <item name="android:listSelector">@color/window_background</item>
+    </style>
+
+    <style name="RssReaderItem">
+        <item name="android:background">@drawable/rss_item_background</item>
+        <item name="android:paddingTop">20dip</item>
+        <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+    </style>
+
+    <style name="windowTitleBackgroundStyle">
+        <item name="android:background">@drawable/window_title_background</item>
+    </style>
+
+    <style name="WindowTitle">
+        <item name="android:shadowColor">@color/white</item>
+        <item name="android:shadowRadius">3</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+</resources>

@@ -51,11 +51,11 @@ public class RssAdapter extends ArrayAdapter<HashMap> {
         } else {
             holder = (ViewHolder) rowView.getTag();
         }
+
+        holder.dateView.setText((String) entities.get(position).get("date"));
         if ((Integer) entities.get(position).get("state") == STATE_EXPANDED) {
             holder.descriptionView.setText((String) entities.get(position).get("description"));
-            rowView.setBackgroundResource(R.color.swiped_item);
         } else {
-            rowView.setBackgroundResource(R.color.normal_item);
             holder.descriptionView.setText((String) entities.get(position).get("title"));
         }
         return rowView;

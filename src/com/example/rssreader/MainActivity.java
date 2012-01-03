@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ import static com.example.rssreader.utils.Utils.internetAvailable;
 
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
-    private static final String RSS_URL = "http://habrahabr.ru/rss/best/";
+    private static final String RSS_URL = "http://dev.by/news/feed";
 
     private PullToRefresh listView;
 
@@ -34,7 +35,10 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.main);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+                R.layout.window_title);
 
         // gets a list view
         listView = (PullToRefresh) findViewById(R.id.list_view);
@@ -68,7 +72,7 @@ public class MainActivity extends Activity {
         super.onResume();
 
         listView.setVisibility(View.GONE);
-        findViewById(R.id.progress).setVisibility(View.VISIBLE);;
+        findViewById(R.id.progress).setVisibility(View.VISIBLE);
         loadFromNetwork();
     }
 
@@ -95,7 +99,6 @@ public class MainActivity extends Activity {
             try {
                 HttpGet request = new HttpGet(url);
                 HttpResponse response = httpClient.execute(request);
-
                 // gets source
                 InputSource inputSource = new InputSource(new InputStreamReader(response.getEntity().getContent()));
                 // parse xml
@@ -112,7 +115,7 @@ public class MainActivity extends Activity {
             ((RssAdapter) listView.getAdapter()).setAll(result);
             listView.onRefreshComplete();
             findViewById(R.id.progress).setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            findViewById(R.id.list_view).setVisibility(View.VISIBLE);
         }
     }
 

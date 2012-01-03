@@ -1,4 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
+    <item type="color" name="white">#FFFFFF</item>
+    <item type="color" name="window_background">#DFDFDF</item>
+
     <item type="color" name="swiped_item">#777777</item>
-    <item type="color" name="normal_item">#000</item>
+    <item type="color" name="normal_item">#FFFFFF</item>
+    <item type="color" name="normal_item_divider">#D8D8D8</item>
+
+    <item type="color" name="normal_item_text">#1D1D1D</item>
 </resources>

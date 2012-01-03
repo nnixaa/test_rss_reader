@@ -10,8 +10,12 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Parse rss feeds and returns HashMap
@@ -25,6 +29,8 @@ public class RssParserHelper {
     private static final String EXPR_DESCRIPTION    = "description";
     private static final String EXPR_DATE           = "pubDate";
     private static final String EXPR_LINK           = "link";
+
+    private static final String DATE_FORMAT         = "dd MMM yyy";
 
     /**
      * Parse xml input
@@ -48,12 +54,23 @@ public class RssParserHelper {
                 // finds necessary data
                 Node title          = (Node) xpath.evaluate(EXPR_TITLE, item, XPathConstants.NODE);
                 Node description    = (Node) xpath.evaluate(EXPR_DESCRIPTION, item, XPathConstants.NODE);
-                Node date           = (Node) xpath.evaluate(EXPR_DATE, item, XPathConstants.NODE);
+                Node pubDate           = (Node) xpath.evaluate(EXPR_DATE, item, XPathConstants.NODE);
                 Node link           = (Node) xpath.evaluate(EXPR_LINK, item, XPathConstants.NODE);
 
                 hash.put("title", title.getTextContent());
                 hash.put("description", android.text.Html.fromHtml(description.getTextContent()).toString());
-                hash.put("date", date.getTextContent());
+
+                SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+                try {
+                    Date date = formatter.parse(pubDate.getTextContent());
+                    formatter = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+                    hash.put("date", formatter.format(date));
+
+                } catch (ParseException e) {
+                    Log.e("E", e.toString());
+                    hash.put("date", "");
+                }
+
                 hash.put("link", link.getTextContent());
                 hash.put("state", RssAdapter.STATE_NORMAL);
 

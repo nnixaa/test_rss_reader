@@ -3,18 +3,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingBottom="20dip"
-    android:paddingTop="20dip"
-    android:paddingLeft="4dip"
-    android:paddingRight="4dip">
+    android:id="@+id/rss_reader_item"
+    style="@style/RssReaderItem">
 
     <TextView
         android:id="@+id/list_item_text"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/rss_reader_item"/>
+
     <TextView
         android:id="@+id/list_item_date"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="asdasd"
+        android:layout_below="@+id/list_item_text"
+        android:gravity="right"
+        style="@style/Widget.TextView.Small"
+        android:layout_alignBottom="@+id/rss_reader_item"/>
 </RelativeLayout>
 
